@@ -1,10 +1,5 @@
 package srl.paros.piccolchain;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 public class Block {
@@ -30,6 +25,10 @@ public class Block {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Data data() {
+        return data;
     }
 
     @Override

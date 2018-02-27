@@ -1,10 +1,9 @@
 package srl.paros.piccolchain;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static srl.paros.piccolchain.Blocks.genesis;
-import static srl.paros.piccolchain.Blocks.next;
 
 public class Blockchain {
 
@@ -12,11 +11,11 @@ public class Blockchain {
 
     public Blockchain() {
         blocks = new ArrayList<>();
-        blocks.add(genesis.get());
+        blocks.add(new Block(0, Instant.now().toEpochMilli(), new Data(1, Collections.emptyList()), "0"));
     }
 
-    void addBlock() {
-        blocks.add(next.apply(last()));
+    void append(Block newBlock) {
+        blocks.add(newBlock);
     }
 
     Block last() {
