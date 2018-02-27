@@ -1,9 +1,9 @@
-package srl.paros.piccolchain;
+package srl.paros.piccolchain.node;
 
-import spark.ExceptionHandler;
-import spark.Request;
-import spark.Response;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import spark.servlet.SparkApplication;
+import srl.paros.piccolchain.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -13,26 +13,26 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static srl.paros.piccolchain.Transactions.transactions;
 
-public class WebServer implements SparkApplication {
+public class Node implements SparkApplication {
 
     private final Transactions transactions = transactions();
     private final Blockchain blockchain = new Blockchain();
     private UUID nodeId;
 
-    public WebServer(UUID nodeId) {
+    public Node(UUID nodeId) {
         this.nodeId = nodeId;
     }
 
     @Override
     public void init() {
-        post("/", (req, res) -> {
+        post("/" + nodeId + "/", (req, res) -> {
             Transaction transaction = Json.fromJson(req.body(), Transaction.class);
             transactions.append(transaction);
             System.out.println("New transaction: " + req.body());
             return "Transaction created";
         });
 
-        get("/mine", (req, res) -> {
+        get("/" + nodeId + "/mine", (req, res) -> {
             Block lastBlock = blockchain.last();
             int lastProofOfWork = lastBlock.data().proofOfWork();
             Integer proof = ProofOfWork.proofOfWork.apply(lastProofOfWork);
@@ -40,10 +40,10 @@ public class WebServer implements SparkApplication {
             transactions.append(new Transaction("network", nodeId.toString(), 1));
 
             Block newBlock = new Block(
-                    lastBlock.index + 1,
+                    lastBlock.index() + 1,
                     Instant.now().toEpochMilli(),
                     new Data(proof, transactions.get()),
-                    lastBlock.hash
+                    lastBlock.hash()
             );
 
             blockchain.append(newBlock);
@@ -53,7 +53,7 @@ public class WebServer implements SparkApplication {
             return blockchain.last();
         }, Json::toJson);
 
-        get("/blocks", (req, res) -> blockchain.blocks, Json::toJson);
+        get("/" + nodeId + "/blocks", (req, res) -> blockchain.blocks(), Json::toJson);
 
         exception(Exception.class, (exception, request, response) -> System.err.println(exception));
     }

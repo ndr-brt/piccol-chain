@@ -14,12 +14,16 @@ public class Blockchain {
         blocks.add(new Block(0, Instant.now().toEpochMilli(), new Data(1, Collections.emptyList()), "0"));
     }
 
-    void append(Block newBlock) {
+    public void append(Block newBlock) {
         blocks.add(newBlock);
     }
 
-    Block last() {
+    public Block last() {
         return blocks.get(blocks.size() - 1);
+    }
+
+    public List<Block> blocks() {
+        return blocks;
     }
 
     @Override

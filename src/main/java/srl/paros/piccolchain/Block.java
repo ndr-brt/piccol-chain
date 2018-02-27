@@ -18,7 +18,7 @@ public class Block {
         this.hash = hash();
     }
 
-    private String hash() {
+    public String hash() {
         try {
             String key = String.valueOf(index) + timestamp + data + previousHash;
             return sha256Hex(key);
@@ -29,6 +29,10 @@ public class Block {
 
     public Data data() {
         return data;
+    }
+
+    public int index() {
+        return index;
     }
 
     @Override
