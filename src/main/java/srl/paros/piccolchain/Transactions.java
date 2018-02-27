@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 public interface Transactions {
 
+    void empty();
+
     enum Singleton {
         INSTANCE;
 
@@ -29,6 +31,11 @@ public interface Transactions {
     class InMemory implements Transactions {
 
         private final List<Transaction> list = new ArrayList<>();
+
+        @Override
+        public void empty() {
+            list.clear();
+        }
 
         @Override
         public List<Transaction> get() {

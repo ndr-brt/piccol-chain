@@ -40,7 +40,7 @@ public class WebServer implements SparkApplication {
             transactions.append(new Transaction("network", nodeId.toString(), 1));
 
             Block newBlock = new Block(
-                    lastBlock.index,
+                    lastBlock.index + 1,
                     Instant.now().toEpochMilli(),
                     new Data(proof, transactions.get()),
                     lastBlock.hash
@@ -48,8 +48,12 @@ public class WebServer implements SparkApplication {
 
             blockchain.append(newBlock);
 
-            return Json.toJson(blockchain.last());
-        });
+            transactions.empty();
+
+            return blockchain.last();
+        }, Json::toJson);
+
+        get("/blocks", (req, res) -> blockchain.blocks, Json::toJson);
 
         exception(Exception.class, (exception, request, response) -> System.err.println(exception));
     }
