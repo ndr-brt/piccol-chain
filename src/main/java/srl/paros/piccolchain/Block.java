@@ -11,11 +11,11 @@ public class Block {
 
     final int index;
     final long timestamp;
-    final Object data;
+    final Data data;
     final String previousHash;
     final String hash;
 
-    public Block(int index, long timestamp, Object data, String previousHash) {
+    public Block(int index, long timestamp, Data data, String previousHash) {
         this.index = index;
         this.timestamp = timestamp;
         this.data = data;
@@ -34,6 +34,12 @@ public class Block {
 
     @Override
     public String toString() {
-        return Json.toJson(this);
+        return "Block{" +
+                "index=" + index +
+                ", timestamp=" + timestamp +
+                ", data=" + data +
+                ", previousHash='" + previousHash + '\'' +
+                ", hash='" + hash + '\'' +
+                '}';
     }
 }
