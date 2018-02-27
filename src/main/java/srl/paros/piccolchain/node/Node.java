@@ -2,6 +2,8 @@ package srl.paros.piccolchain.node;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
 import srl.paros.piccolchain.*;
 
@@ -14,6 +16,8 @@ import static spark.Spark.post;
 import static srl.paros.piccolchain.Transactions.transactions;
 
 public class Node implements SparkApplication {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Transactions transactions = transactions();
     private final Blockchain blockchain = new Blockchain();
@@ -28,7 +32,7 @@ public class Node implements SparkApplication {
         post("/" + nodeId + "/", (req, res) -> {
             Transaction transaction = Json.fromJson(req.body(), Transaction.class);
             transactions.append(transaction);
-            System.out.println("New transaction: " + req.body());
+            log.info("New transaction: " + req.body());
             return "Transaction created";
         });
 
@@ -55,7 +59,7 @@ public class Node implements SparkApplication {
 
         get("/" + nodeId + "/blocks", (req, res) -> blockchain.blocks(), Json::toJson);
 
-        exception(Exception.class, (exception, request, response) -> System.err.println(exception));
+        exception(Exception.class, (exception, request, response) -> log.error("Exception", exception));
     }
 
     public UUID id() {
