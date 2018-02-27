@@ -57,4 +57,8 @@ public class Node implements SparkApplication {
 
         exception(Exception.class, (exception, request, response) -> System.err.println(exception));
     }
+
+    public UUID id() {
+        return nodeId;
+    }
 }
