@@ -26,26 +26,29 @@ public class Main {
 
         int nodes = 2;
 
-        Executors.newFixedThreadPool(nodes).submit(() -> {
-            Node node = new Node(createNode(guestList));
-            node.init();
+        ExecutorService pool = Executors.newFixedThreadPool(nodes);
+        for (int i = 0; i < nodes; i++) {
+            pool.submit(() -> {
+                Node node = new Node(createNode(guestList));
+                node.init();
 
-            log.info("Registered new node {}", node.id());
+                log.info("Registered new node {}", node.id());
 
-            while (true) {
+                while (true) {
 
-                for (int i = 0; i < random(5); i++) {
-                    newTransaction(node);
+                    for (int j = 0; j < random(5); j++) {
+                        newTransaction(node);
+                    }
+
+                    log.info("Mine a block {}", mine(node));
+
+                    Thread.sleep(random(1000));
+
+                    log.info("Blockchain {}", blockChainOf(node));
                 }
 
-                log.info("Mine a block {}", mine(node));
-
-                Thread.sleep(random(1000));
-
-                log.info("Blockchain {}", blockChainOf(node));
-            }
-
-        });
+            });
+        }
 
         Thread.sleep(2000);
 
