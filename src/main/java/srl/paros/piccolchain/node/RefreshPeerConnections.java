@@ -8,14 +8,14 @@ import srl.paros.piccolchain.Json;
 import java.util.List;
 import java.util.TimerTask;
 
-public class PeerConnection extends TimerTask {
+public class RefreshPeerConnections extends TimerTask {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private Node node;
+    private String name;
 
-    public PeerConnection(Node node) {
-        this.node = node;
+    public RefreshPeerConnections(String name) {
+        this.name = name;
     }
 
     @Override
@@ -30,12 +30,12 @@ public class PeerConnection extends TimerTask {
             log.info("Guestlist response: {}", json);
 
             Json.fromJson(json, List.class).stream()
-                    .filter(peer -> !peer.equals(node.name()))
+                    .filter(peer -> !peer.equals(name))
                     .forEach(peer -> {
                         try {
                             log.info("Hey {}, i'm here!", peer);
                             Unirest.post("http://" + peer + ":4567/addPeer")
-                                    .body(node.name())
+                                    .body(name)
                                     .asString();
                         } catch (Exception e) {
                             log.error("Error telling the peer that I exist", e);

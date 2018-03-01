@@ -86,7 +86,7 @@ public class Node implements SparkApplication {
         joinTheNet();
 
         Timer timer = new Timer();
-        timer.schedule(new PeerConnection(this), 5000);
+        timer.schedule(new RefreshPeerConnections(this.name()), 5000, 30000);
 
     }
 
@@ -134,9 +134,5 @@ public class Node implements SparkApplication {
 
     public String name() {
         return name;
-    }
-
-    public WebSocketServer socket() {
-        return webSocketServer;
     }
 }
