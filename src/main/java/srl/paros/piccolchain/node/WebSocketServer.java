@@ -42,8 +42,9 @@ public class WebSocketServer implements WebSocketListener {
                 transactions.append(Json.fromJson(content, Transaction.class));
                 break;
             case "block":
-                log.info("New block by peer, update chain");
+                log.info("New block by peer, update chain and empty transactions");
                 blockchain.append(Json.fromJson(content, Block.class));
+                transactions.empty();
                 break;
             default:
                 log.warn("Message type unknown {}", type);
