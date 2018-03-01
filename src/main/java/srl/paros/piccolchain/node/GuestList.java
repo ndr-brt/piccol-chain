@@ -5,40 +5,29 @@ import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
 import srl.paros.piccolchain.Json;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static java.util.stream.Collectors.toSet;
+import static spark.Spark.*;
 
 public class GuestList implements SparkApplication {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private UUID id;
-    private List<UUID> nodes = new ArrayList<>();
-
-    public GuestList(UUID id) {
-        this.id = id;
-    }
+    private Set<String> nodes = new HashSet<>();
 
     @Override
     public void init() {
-        post("/" + id + "/", (req, res) -> {
-            UUID node = UUID.randomUUID();
+
+        post("/", (req, res) -> {
+            String node = req.body();
             log.info("A node request to join {}", node);
             nodes.add(node);
-            return node.toString();
+            return Json.toJson(nodes.stream().filter(it -> !node.equals(it)).collect(toSet()));
         });
 
-        get("/" + id + "/", (req, res) -> nodes, Json::toJson);
+        get("/", (req, res) -> nodes, Json::toJson);
 
         exception(Exception.class, (exception, request, response) -> log.error("Exception", exception));
-    }
-
-    public UUID id() {
-        return id;
     }
 }

@@ -1,28 +1,32 @@
 package srl.paros.piccolchain;
 
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.GuestList;
 import srl.paros.piccolchain.node.Node;
 
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class Main {
 
     private static Logger log = LoggerFactory.getLogger(Main.class);
 
-    private static final String BASE_URL = "http://localhost:4567/";
-
     public static void main(String[] args) throws Exception {
-        GuestList guestList = new GuestList(UUID.randomUUID());
-        guestList.init();
 
+        switch (args[0]) {
+            case "guestlist":
+                new GuestList().init();
+                break;
+            case "node":
+                new Node(args[1]).init();
+                break;
+            default:
+                log.error("node type {} not existent", args[1]);
+        }
+
+/*
         log.info("Guest list created. Id {}", guestList.id());
+
+        Node aaaa = new Node(createNode(guestList));
+        aaaa.init();
 
         int nodes = 2;
 
@@ -53,8 +57,9 @@ public class Main {
         Thread.sleep(2000);
 
         log.info("All nodes {}", allNodes(guestList));
+        */
     }
-
+/*
     private static UUID createNode(GuestList guestList) {
         try {
             return UUID.fromString(Unirest.post(BASE_URL + guestList.id() + "/")
@@ -111,4 +116,5 @@ public class Main {
     private static int random(int bound) {
         return new Random().nextInt(bound) + 1;
     }
+    */
 }
