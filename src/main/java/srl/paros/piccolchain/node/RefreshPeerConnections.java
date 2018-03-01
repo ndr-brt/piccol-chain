@@ -20,7 +20,7 @@ public class RefreshPeerConnections extends TimerTask {
 
     @Override
     public void run() {
-
+        log.info("Refresh peer connections");
         try {
             log.info("Ask peers to guestlist");
             String json = Unirest.get("http://guestlist:4567/")
@@ -43,7 +43,7 @@ public class RefreshPeerConnections extends TimerTask {
                     });
 
         } catch (Exception e) {
-            log.error("Error obtain peers list", e);
+            log.error("Error refreshing peer connections", e);
         }
     }
 
