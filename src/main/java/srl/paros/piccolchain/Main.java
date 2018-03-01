@@ -16,7 +16,7 @@ public class Main {
                 new GuestList().init();
                 break;
             case "node":
-                new Node(args[1]).init();
+                new Node().init();
                 break;
             default:
                 log.error("node type {} not existent", args[1]);

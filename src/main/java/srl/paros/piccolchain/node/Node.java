@@ -10,9 +10,13 @@ import srl.paros.piccolchain.*;
 import srl.paros.piccolchain.websocket.WebSocketServer;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Timer;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import static spark.Spark.*;
 import static srl.paros.piccolchain.Transactions.transactions;
@@ -23,12 +27,12 @@ public class Node implements SparkApplication {
 
     private final Transactions transactions = transactions();
     private final Blockchain blockchain = Blockchain.blockchain();
-    private String name;
+    private final String name;
     private final WebSocketServer webSocketServer;
     private final WebSocketClient webSocketClient;
 
-    public Node(String name) {
-        this.name = name;
+    public Node() {
+        this.name = hostname.get();
         webSocketServer = new WebSocketServer();
         webSocketClient = new WebSocketClient();
         try {
@@ -86,6 +90,17 @@ public class Node implements SparkApplication {
         timer.schedule(new PeerConnection(this), 5000);
 
     }
+
+    private final Supplier<String> hostname = () -> {
+        try {
+            String name = InetAddress.getLocalHost().getHostName();
+            log.info("Node's name {}", name);
+            return name;
+        } catch (UnknownHostException e) {
+            log.error("Error getting hostname, give an uuid", e);
+            return UUID.randomUUID().toString();
+        }
+    };
 
     private void broadcast(String type, String message) {
         webSocketClient.getOpenSessions().forEach(session -> {

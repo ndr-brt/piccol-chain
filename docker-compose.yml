@@ -11,7 +11,7 @@ services:
 
   node-one:
     image: openjdk:8-jre
-    command: java -jar /app/app.jar node node-one
+    command: java -jar /app/app.jar node
     ports:
       - "10001:4567"
     volumes:
@@ -19,7 +19,7 @@ services:
 
   node-two:
     image: openjdk:8-jre
-    command: java -jar /app/app.jar node node-two
+    command: java -jar /app/app.jar node
     ports:
       - "10002:4567"
     volumes:
