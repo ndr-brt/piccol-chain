@@ -22,7 +22,7 @@ public class Node implements SparkApplication {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Transactions transactions = transactions();
-    private final Blockchain blockchain = new Blockchain();
+    private final Blockchain blockchain = Blockchain.blockchain();
     private String name;
     private final WebSocketServer webSocketServer;
     private final WebSocketClient webSocketClient;
@@ -69,6 +69,7 @@ public class Node implements SparkApplication {
             blockchain.append(newBlock);
 
             transactions.empty();
+            broadcast("block", Json.toJson(newBlock));
 
             return blockchain.last();
         }, Json::toJson);

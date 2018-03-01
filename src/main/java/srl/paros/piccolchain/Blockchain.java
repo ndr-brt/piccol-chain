@@ -5,31 +5,51 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Blockchain {
+public interface Blockchain {
 
-    final List<Block> blocks;
-
-    public Blockchain() {
-        blocks = new ArrayList<>();
-        blocks.add(new Block(0, Instant.now().toEpochMilli(), new Data(1, Collections.emptyList()), "0"));
+    static Blockchain blockchain() {
+        return Singleton.INSTANCE.blockchain;
     }
 
-    public void append(Block newBlock) {
-        blocks.add(newBlock);
+    enum Singleton {
+        INSTANCE;
+
+        private final Blockchain blockchain = new InMemory();
     }
 
-    public Block last() {
-        return blocks.get(blocks.size() - 1);
-    }
+    void append(Block newBlock);
 
-    public List<Block> blocks() {
-        return blocks;
-    }
+    Block last();
 
-    @Override
-    public String toString() {
-        return "Blockchain{" +
-                "blocks=" + blocks +
-                '}';
+    List<Block> blocks();
+
+
+    class InMemory implements Blockchain {
+
+        final List<Block> blocks;
+
+        InMemory() {
+            blocks = new ArrayList<>();
+            blocks.add(new Block(0, Instant.now().toEpochMilli(), new Data(1, Collections.emptyList()), "0"));
+        }
+
+        public void append(Block newBlock) {
+            blocks.add(newBlock);
+        }
+
+        public Block last() {
+            return blocks.get(blocks.size() - 1);
+        }
+
+        public List<Block> blocks() {
+            return blocks;
+        }
+
+        @Override
+        public String toString() {
+            return "Blockchain{" +
+                    "blocks=" + blocks +
+                    '}';
+        }
     }
 }

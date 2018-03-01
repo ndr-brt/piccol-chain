@@ -8,9 +8,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import srl.paros.piccolchain.Json;
-import srl.paros.piccolchain.Transaction;
-import srl.paros.piccolchain.Transactions;
+import srl.paros.piccolchain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,10 @@ public class WebSocketServer implements WebSocketListener {
             case "transaction":
                 log.info("New transaction by peer, append");
                 Transactions.transactions().append(Json.fromJson(content, Transaction.class));
+                break;
+            case "block":
+                log.info("New block by peer, update chain");
+                Blockchain.blockchain().append(Json.fromJson(content, Block.class));
                 break;
             default:
                 log.warn("Message type unknown {}", type);
