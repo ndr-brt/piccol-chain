@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.websocket;
+package srl.paros.piccolchain.node;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -8,7 +8,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import srl.paros.piccolchain.*;
+import srl.paros.piccolchain.Json;
 import srl.paros.piccolchain.domain.Block;
 import srl.paros.piccolchain.domain.Blockchain;
 import srl.paros.piccolchain.domain.Transaction;
@@ -21,8 +21,14 @@ import java.util.List;
 @WebSocket
 public class WebSocketServer implements WebSocketListener {
 
+    private final Transactions transactions;
+    private final Blockchain blockchain;
     private Logger log = LoggerFactory.getLogger(getClass());
-    private List<Session> sessions = new ArrayList<>();
+
+    public WebSocketServer(Transactions transactions, Blockchain blockchain) {
+        this.transactions = transactions;
+        this.blockchain = blockchain;
+    }
 
     @OnWebSocketMessage
     @Override
@@ -33,11 +39,11 @@ public class WebSocketServer implements WebSocketListener {
         switch (type) {
             case "transaction":
                 log.info("New transaction by peer, append");
-                Transactions.transactions().append(Json.fromJson(content, Transaction.class));
+                transactions.append(Json.fromJson(content, Transaction.class));
                 break;
             case "block":
                 log.info("New block by peer, update chain");
-                Blockchain.blockchain().append(Json.fromJson(content, Block.class));
+                blockchain.append(Json.fromJson(content, Block.class));
                 break;
             default:
                 log.warn("Message type unknown {}", type);
@@ -54,17 +60,16 @@ public class WebSocketServer implements WebSocketListener {
     @Override
     public void onWebSocketConnect(Session session) {
         log.info("New websocket connection from {}", session);
-        sessions.add(session);
     }
 
     @Override
-    public void onWebSocketBinary(byte[] bytes, int i, int i1) {
-
+    public void onWebSocketBinary(byte payload[], int offset, int len) {
+        log.info("New binary message (not handled): {} {} {}", payload, offset, len);
     }
 
     @Override
     public void onWebSocketError(Throwable throwable) {
-
+        log.error("Error on websocket communication", throwable);
     }
 
 }

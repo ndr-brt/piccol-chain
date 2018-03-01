@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
 import srl.paros.piccolchain.*;
 import srl.paros.piccolchain.domain.*;
-import srl.paros.piccolchain.websocket.WebSocketServer;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -34,7 +33,7 @@ public class Node implements SparkApplication {
 
     public Node() {
         this.name = hostname.get();
-        webSocketServer = new WebSocketServer();
+        webSocketServer = new WebSocketServer(transactions, blockchain);
         webSocketClient = new WebSocketClient();
         try {
             webSocketClient.start();
