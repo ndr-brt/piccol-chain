@@ -1,4 +1,4 @@
-package srl.paros.piccolchain;
+package srl.paros.piccolchain.domain;
 
 import java.util.Collection;
 

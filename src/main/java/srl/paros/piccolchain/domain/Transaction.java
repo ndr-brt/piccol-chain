@@ -1,4 +1,4 @@
-package srl.paros.piccolchain;
+package srl.paros.piccolchain.domain;
 
 public class Transaction {
     private final String from;

@@ -1,5 +1,8 @@
 package srl.paros.piccolchain;
 
+import srl.paros.piccolchain.domain.Block;
+import srl.paros.piccolchain.domain.Data;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;

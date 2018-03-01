@@ -7,10 +7,15 @@ Based on
 ## Prerequisites
 
 You need:
-* jdk 8
+* jdk 9
 * maven
 * docker
 * docker compose
+
+### Make maven deal with jdk 9
+As you can see in the pom file, it refers to a `javac9` command, you just need to add it to your path.  
+I added a symlink in my `/usr/bin`:  
+`sudo ln -s /usr/lib/jvm/java-9-openjdk-amd64/bin/javac /usr/bin/javac9`
 
 ## Run it!
 

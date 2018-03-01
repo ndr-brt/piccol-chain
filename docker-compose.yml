@@ -2,7 +2,7 @@ version: "3"
 services:
 
   guestlist:
-    image: openjdk:8-jre
+    image: openjdk:9-jre
     command: java -jar /app/app.jar guestlist
     ports:
       - "10000:4567"
@@ -10,7 +10,7 @@ services:
       - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
 
   node-one:
-    image: openjdk:8-jre
+    image: openjdk:9-jre
     command: java -jar /app/app.jar node
     ports:
       - "10001:4567"
@@ -18,7 +18,7 @@ services:
       - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
 
   node-two:
-    image: openjdk:8-jre
+    image: openjdk:9-jre
     command: java -jar /app/app.jar node
     ports:
       - "10002:4567"
@@ -26,7 +26,7 @@ services:
       - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
 
   node-three:
-    image: openjdk:8-jre
+    image: openjdk:9-jre
     command: java -jar /app/app.jar node
     ports:
       - "10003:4567"

@@ -1,14 +1,14 @@
-package srl.paros.piccolchain;
+package srl.paros.piccolchain.domain;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 public class Block {
 
-    final int index;
-    final long timestamp;
-    final Data data;
-    final String previousHash;
-    final String hash;
+    private final int index;
+    private final long timestamp;
+    private final Data data;
+    private final String previousHash;
+    private final String hash;
 
     public Block(int index, long timestamp, Data data, String previousHash) {
         this.index = index;
