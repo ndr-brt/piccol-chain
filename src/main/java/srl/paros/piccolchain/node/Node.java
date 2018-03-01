@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
 import srl.paros.piccolchain.*;
-import srl.paros.piccolchain.domain.Block;
-import srl.paros.piccolchain.domain.Data;
-import srl.paros.piccolchain.domain.Transaction;
+import srl.paros.piccolchain.domain.*;
 import srl.paros.piccolchain.websocket.WebSocketServer;
 
 import java.io.IOException;
@@ -22,7 +20,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import static spark.Spark.*;
-import static srl.paros.piccolchain.Transactions.transactions;
+import static srl.paros.piccolchain.domain.Transactions.transactions;
 
 public class Node implements SparkApplication {
 

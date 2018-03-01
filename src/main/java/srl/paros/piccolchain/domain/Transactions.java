@@ -1,6 +1,4 @@
-package srl.paros.piccolchain;
-
-import srl.paros.piccolchain.domain.Transaction;
+package srl.paros.piccolchain.domain;
 
 import java.util.ArrayList;
 import java.util.List;

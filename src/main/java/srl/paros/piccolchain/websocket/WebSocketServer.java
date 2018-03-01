@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.*;
 import srl.paros.piccolchain.domain.Block;
+import srl.paros.piccolchain.domain.Blockchain;
 import srl.paros.piccolchain.domain.Transaction;
+import srl.paros.piccolchain.domain.Transactions;
 
 import java.util.ArrayList;
 import java.util.List;
