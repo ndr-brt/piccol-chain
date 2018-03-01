@@ -22,8 +22,22 @@ I added a symlink in my `/usr/bin`:
 Execute  
 `mvn clean package && docker-compose up`  
 
-Than you can comunicate with nodes on these url:  
+Than you can communicate with nodes on these url:  
 * **guestlist**: http://localhost:10000/
 * **node_one**: http://localhost:10001/
 * **node_two**: http://localhost:10002/
 * **node_three**: http://localhost:10003/
+
+## Api
+
+### Guestlist
+
+* `POST /` join the net, body contains the hostname
+* `GET /` retrieve the nodes' hostnames
+
+### Node
+
+* `POST /` create a transaction, body contains the json representation
+* `GET /mine` mine a block
+* `GET /blocks` retrieve the blockchain
+* `POST /addPeer` make the peer extabilish a websocket connection. body contains the hostname
