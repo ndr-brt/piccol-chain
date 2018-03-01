@@ -8,7 +8,6 @@ import srl.paros.piccolchain.Json;
 import srl.paros.piccolchain.websocket.WebSocketServer;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -16,7 +15,6 @@ public class PeerConnection extends TimerTask {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    List<String> peers = new ArrayList<>();
     private Node node;
 
     public PeerConnection(Node node) {
@@ -50,16 +48,6 @@ public class PeerConnection extends TimerTask {
         } catch (Exception e) {
             log.error("Error obtain peers list", e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        WebSocketClient client = new WebSocketClient();
-        client.start();
-        WebSocketServer socket = new WebSocketServer();
-        client.connect(socket, URI.create("ws://localhost:10002/socket"));
-
-        Thread.sleep(4000);
-        System.out.println(client);
     }
 
 }
