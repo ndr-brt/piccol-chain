@@ -7,6 +7,7 @@ import srl.paros.piccolchain.Json;
 
 import java.util.List;
 import java.util.TimerTask;
+import java.util.function.Consumer;
 
 public class RefreshPeerConnections extends TimerTask {
 
@@ -23,7 +24,7 @@ public class RefreshPeerConnections extends TimerTask {
         log.info("Refresh peer connections");
         try {
             log.info("Ask peers to guestlist");
-            String json = Unirest.get("http://guestlist:4567/")
+            String json = Unirest.get("http://guestlist:4567/nodes")
                     .asString()
                     .getBody();
 
@@ -31,20 +32,24 @@ public class RefreshPeerConnections extends TimerTask {
 
             Json.fromJson(json, List.class).stream()
                     .filter(peer -> !peer.equals(name))
-                    .forEach(peer -> {
-                        try {
-                            log.info("Hey {}, i'm here!", peer);
-                            Unirest.post("http://" + peer + ":4567/addPeer")
-                                    .body(name)
-                                    .asString();
-                        } catch (Exception e) {
-                            log.error("Error telling the peer that I exist", e);
-                        }
-                    });
+                    .forEach(heyIExists());
 
         } catch (Exception e) {
             log.error("Error refreshing peer connections", e);
         }
+    }
+
+    private Consumer heyIExists() {
+        return peer -> {
+            try {
+                log.info("Hey {}, i'm here!", peer);
+                Unirest.post("http://" + peer + ":4567/addPeer")
+                        .body(name)
+                        .asString();
+            } catch (Exception e) {
+                log.error("Error telling the peer that I exist", e);
+            }
+        };
     }
 
 }

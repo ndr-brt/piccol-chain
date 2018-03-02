@@ -113,7 +113,7 @@ public class Node implements SparkApplication {
 
     private void joinTheNet() {
         try {
-            Unirest.post("http://guestlist:4567/")
+            Unirest.post("http://guestlist:4567/nodes")
                     .body(name)
                     .asString();
         } catch (UnirestException e) {

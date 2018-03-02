@@ -32,8 +32,8 @@ Than you can communicate with nodes on these url:
 
 ### Guestlist
 
-* `POST /` join the net, body contains the hostname
-* `GET /` retrieve the nodes' hostnames
+* `POST /nodes` join the net, body contains the hostname
+* `GET /nodes` retrieve the nodes' hostnames
 
 ### Node
 

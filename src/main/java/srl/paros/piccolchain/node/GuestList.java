@@ -19,14 +19,14 @@ public class GuestList implements SparkApplication {
     @Override
     public void init() {
 
-        post("/", (req, res) -> {
+        post("/nodes", (req, res) -> {
             String node = req.body();
             log.info("A node request to join {}", node);
             nodes.add(node);
             return Json.toJson(nodes.stream().filter(it -> !node.equals(it)).collect(toSet()));
         });
 
-        get("/", (req, res) -> nodes, Json::toJson);
+        get("/nodes", (req, res) -> nodes, Json::toJson);
 
         exception(Exception.class, (exception, request, response) -> log.error("Exception", exception));
     }
