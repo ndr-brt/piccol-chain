@@ -48,7 +48,7 @@ public class Node implements SparkApplication {
 
         webSocket("/socket", webSocketServer);
 
-        post("/", (req, res) -> {
+        post("/transactions", (req, res) -> {
             Transaction transaction = Json.fromJson(req.body(), Transaction.class);
             transactions.append(transaction);
             log.info("New transaction: " + req.body());

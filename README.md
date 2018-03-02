@@ -37,7 +37,7 @@ Than you can communicate with nodes on these url:
 
 ### Node
 
-* `POST /` create a transaction, body contains the json representation
+* `POST /transactions` create a transaction, body contains the json representation
 * `GET /mine` mine a block
 * `GET /blocks` retrieve the blockchain
 * `POST /addPeer` make the peer extabilish a websocket connection. body contains the hostname
