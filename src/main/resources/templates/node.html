@@ -18,6 +18,10 @@
     </table>
 
     <h2>Blocks</h2>
+    <form action="/mine" method="get">
+        <input type="hidden" name="redirect" value="/">
+        <input type="submit" value="Mine">
+    </form>
     <table>
         <tr th:each="block : ${blocks}">
             <td th:text="${block}">From</td>

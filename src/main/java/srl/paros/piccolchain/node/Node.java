@@ -97,6 +97,7 @@ public class Node implements SparkApplication {
             transactions.empty();
             broadcast("block", Json.toJson(newBlock));
 
+            res.redirect("/");
             return blockchain.last();
         }, Json::toJson);
 
