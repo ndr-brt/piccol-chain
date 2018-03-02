@@ -66,13 +66,15 @@ public class Node implements SparkApplication {
         });
 
         post("/transactions", "application/x-www-form-urlencoded", (req, res) -> {
-            transactions.append(new Transaction(
+            Transaction transaction = new Transaction(
                     req.queryParams("from"),
                     req.queryParams("to"),
                     Long.valueOf(req.queryParams("amount"))
-            ));
-            log.info("New transaction: " + req.body());
-            broadcast("transaction", req.body());
+            );
+            transactions.append(transaction);
+            String json = Json.toJson(transaction);
+            log.info("New transaction: " + json);
+            broadcast("transaction", json);
             res.redirect("/");
             return "Transaction created";
         });
