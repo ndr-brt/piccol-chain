@@ -24,11 +24,7 @@ public class GuestList implements SparkApplication {
     @Override
     public void init() {
 
-        get("/", (req, res) -> {
-            Map<String, Object> params = new HashMap<>();
-            params.put("nodes", nodes);
-            return new ModelAndView(params, "guestlist");
-        }, new ThymeleafTemplateEngine());
+        get("/", (req, res) -> new ModelAndView(Map.of("nodes", nodes), "guestlist"), new ThymeleafTemplateEngine());
 
         post("/nodes", (req, res) -> {
             String node = req.body();
