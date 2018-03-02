@@ -57,11 +57,23 @@ public class Node implements SparkApplication {
                         "blocks", blockchain.blocks()), "node"),
                 new ThymeleafTemplateEngine());
 
-        post("/transactions", (req, res) -> {
+        post("/transactions", "application/json", (req, res) -> {
             Transaction transaction = Json.fromJson(req.body(), Transaction.class);
             transactions.append(transaction);
             log.info("New transaction: " + req.body());
             broadcast("transaction", req.body());
+            return "Transaction created";
+        });
+
+        post("/transactions", "application/x-www-form-urlencoded", (req, res) -> {
+            transactions.append(new Transaction(
+                    req.queryParams("from"),
+                    req.queryParams("to"),
+                    Long.valueOf(req.queryParams("amount"))
+            ));
+            log.info("New transaction: " + req.body());
+            broadcast("transaction", req.body());
+            res.redirect("/");
             return "Transaction created";
         });
 

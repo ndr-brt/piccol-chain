@@ -2,6 +2,15 @@
     <h1>Node [[${name}]]</h1>
 
     <h2>Transactions</h2>
+    <form action="/transactions" method="post">
+        <fieldset>
+            From <input type="text" name="from"/>
+            To <input type="text" name="to" />
+            Amount <input type="text" name="amount" />
+            <input type="submit" value="Create"/>
+        </fieldset>
+    </form>
+    
     <table>
         <tr th:each="transaction : ${transactions}">
             <td th:text="${transaction}">From</td>
