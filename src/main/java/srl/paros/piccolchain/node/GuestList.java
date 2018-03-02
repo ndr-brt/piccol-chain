@@ -2,10 +2,15 @@ package srl.paros.piccolchain.node;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.ModelAndView;
 import spark.servlet.SparkApplication;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import srl.paros.piccolchain.Json;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 import static spark.Spark.*;
@@ -18,6 +23,12 @@ public class GuestList implements SparkApplication {
 
     @Override
     public void init() {
+
+        get("/", (req, res) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("nodes", nodes);
+            return new ModelAndView(params, "guestlist");
+        }, new ThymeleafTemplateEngine());
 
         post("/nodes", (req, res) -> {
             String node = req.body();
