@@ -5,7 +5,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.ModelAndView;
 import spark.servlet.SparkApplication;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import srl.paros.piccolchain.*;
 import srl.paros.piccolchain.domain.*;
 
@@ -14,6 +16,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -47,6 +50,12 @@ public class Node implements SparkApplication {
     public void init() {
 
         webSocket("/socket", webSocketServer);
+
+        get("/", (req, res) -> new ModelAndView(
+                Map.of("name", name,
+                        "transactions", transactions.get(),
+                        "blocks", blockchain.blocks()), "node"),
+                new ThymeleafTemplateEngine());
 
         post("/transactions", (req, res) -> {
             Transaction transaction = Json.fromJson(req.body(), Transaction.class);

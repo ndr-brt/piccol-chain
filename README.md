@@ -28,6 +28,8 @@ Than you can communicate with nodes on these url:
 * **node_two**: http://localhost:10002/
 * **node_three**: http://localhost:10003/
 
+Put those urls in you browser to show node's data.
+
 ## Api
 
 ### Guestlist

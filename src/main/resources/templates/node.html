@@ -1,0 +1,17 @@
+<html>
+    <h1>Node [[${name}]]</h1>
+
+    <h2>Transactions</h2>
+    <table>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction}">From</td>
+        </tr>
+    </table>
+
+    <h2>Blocks</h2>
+    <table>
+        <tr th:each="block : ${blocks}">
+            <td th:text="${block}">From</td>
+        </tr>
+    </table>
+</html>
