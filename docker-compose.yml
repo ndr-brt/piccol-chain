@@ -2,33 +2,33 @@ version: "3"
 services:
 
   guestlist:
-    image: openjdk:10-jre
-    command: java -jar /app/app.jar guestlist
+    image: openjdk:11-jre
+    command: java -jar app.jar guestlist
     ports:
       - "10000:4567"
     volumes:
-      - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
+      - ./target/app.jar:/app.jar
 
   node-one:
-    image: openjdk:10-jre
-    command: java -jar /app/app.jar node
+    image: openjdk:11-jre
+    command: java -jar app.jar node
     ports:
       - "10001:4567"
     volumes:
-      - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
+      - ./target/app.jar:/app.jar
 
   node-two:
-    image: openjdk:10-jre
-    command: java -jar /app/app.jar node
+    image: openjdk:11-jre
+    command: java -jar app.jar node
     ports:
       - "10002:4567"
     volumes:
-      - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
+      - ./target/app.jar:/app.jar
 
   node-three:
-    image: openjdk:10-jre
-    command: java -jar /app/app.jar node
+    image: openjdk:11-jre
+    command: java -jar app.jar node
     ports:
       - "10003:4567"
     volumes:
-      - ./target/piccol-chain-1.0-SNAPSHOT-shaded.jar:/app/app.jar
+      - ./target/app.jar:/app.jar
