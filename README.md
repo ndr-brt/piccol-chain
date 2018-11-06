@@ -7,7 +7,7 @@ Based on
 ## Prerequisites
 
 You need:
-* jdk 10
+* jdk 11
 * maven
 * docker
 * docker compose
