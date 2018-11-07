@@ -13,7 +13,7 @@ import java.util.Set;
 import static io.vertx.ext.web.Router.router;
 import static java.util.stream.Collectors.toSet;
 
-public class GuestListVerticle extends AbstractVerticle {
+public class GuestList extends AbstractVerticle {
 
     private Logger log = LoggerFactory.getLogger(getClass());
     private Nodes nodes = Nodes.InMemory;
@@ -60,6 +60,6 @@ public class GuestListVerticle extends AbstractVerticle {
     }
 
     public static void main(String[] args) {
-        Vertx.vertx().deployVerticle(new GuestListVerticle());
+        Vertx.vertx().deployVerticle(new GuestList());
     }
 }
