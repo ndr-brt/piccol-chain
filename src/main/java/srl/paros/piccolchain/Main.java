@@ -1,8 +1,9 @@
 package srl.paros.piccolchain;
 
+import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import srl.paros.piccolchain.node.GuestList;
+import srl.paros.piccolchain.node.GuestListVerticle;
 import srl.paros.piccolchain.node.Node;
 
 public class Main {
@@ -17,13 +18,13 @@ public class Main {
         else {
             switch (args[0]) {
                 case "guestlist":
-                    new GuestList().init();
+                    Vertx.vertx().deployVerticle(new GuestListVerticle());
                     break;
                 case "node":
                     new Node().init();
                     break;
                 default:
-                    log.error("node type {} not existent", args[1]);
+                    log.error("node type {} not existent", args[0]);
             }
         }
 

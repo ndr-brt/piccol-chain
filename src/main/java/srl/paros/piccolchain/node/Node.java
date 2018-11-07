@@ -138,7 +138,7 @@ public class Node implements SparkApplication {
     private void joinTheNet() {
         try {
             Unirest.post("http://guestlist:4567/nodes")
-                    .body(name)
+                    .body(Json.toJson(Map.of("name", name)))
                     .asString();
         } catch (UnirestException e) {
             log.error("Impossible to join the net, verify the guestlist address", e);
