@@ -4,18 +4,14 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
 import srl.paros.piccolchain.domain.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.Instant;
-import java.util.UUID;
-import java.util.function.Supplier;
 
+import static srl.paros.piccolchain.Hostname.HOSTNAME;
 import static srl.paros.piccolchain.domain.Transactions.transactions;
 
 public class NodeVerticle extends AbstractVerticle {
@@ -27,27 +23,21 @@ public class NodeVerticle extends AbstractVerticle {
     private final String name;
 
     public NodeVerticle() {
-        this.name = hostname.get();
+        this.name = HOSTNAME.get();
     }
 
     @Override
     public void start() {
-        Router router = Router.router(vertx);
+        final var router = Router.router(vertx);
+        final var eventBus = vertx.eventBus();
 
-        var engine = ThymeleafTemplateEngine.create();
-        router.get("/").handler(context -> {
-           context.put("name", name);
-           context.put("transactions", transactions.get());
-           context.put("blocks", blockchain.blocks());
-
-           engine.render(context, "templates/", "node.html", res -> {
-               if (res.succeeded()) {
-                   context.response().end(res.result());
-               } else {
-                   context.fail(res.cause());
-               }
-           });
-        });
+        router.get("/")
+                .handler(context -> {
+                    context.put("name", name);
+                    context.put("transactions", transactions.get());
+                    context.put("blocks", blockchain.blocks());
+                })
+                .handler(new StaticContentHandler("templates/", "node.html"));
 
         router.post("/transactions")
                 .consumes("application/json")
@@ -56,7 +46,7 @@ public class NodeVerticle extends AbstractVerticle {
                     Transaction transaction = Json.fromJson(body, Transaction.class);
                     transactions.append(transaction);
                     log.info("New transaction: {}", body);
-                    // broadcast("transaction", body);
+                    eventBus.publish("transaction", transaction);
                     context.response().end("Transaction created");
                 }));
 
@@ -72,8 +62,8 @@ public class NodeVerticle extends AbstractVerticle {
                     );
                     log.info("Create new transaction: {}",req.params());
                     transactions.append(transaction);
-                    String json = Json.toJson(transaction);
-                    //broadcast("transaction", json);
+                    eventBus.publish("transaction", transaction);
+
                     context.response()
                             .putHeader("Location", "/")
                             .end("Transaction created");
@@ -95,7 +85,7 @@ public class NodeVerticle extends AbstractVerticle {
 
             blockchain.append(newBlock);
             transactions.empty();
-            //broadcast("block", Json.toJson(newBlock));
+            eventBus.publish("block", newBlock);
 
             context.response()
                     .putHeader("Location", "/")
@@ -116,15 +106,4 @@ public class NodeVerticle extends AbstractVerticle {
         vertx.exceptionHandler(error -> log.error("Error", error));
     }
 
-
-    private final Supplier<String> hostname = () -> {
-        try {
-            String name = InetAddress.getLocalHost().getHostName();
-            log.info("Node's name {}", name);
-            return name;
-        } catch (UnknownHostException e) {
-            log.error("Error getting hostname, give an uuid", e);
-            return UUID.randomUUID().toString();
-        }
-    };
 }

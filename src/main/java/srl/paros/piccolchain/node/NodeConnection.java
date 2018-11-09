@@ -6,7 +6,6 @@ import io.vertx.core.http.HttpClient;
 import srl.paros.piccolchain.Json;
 
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
