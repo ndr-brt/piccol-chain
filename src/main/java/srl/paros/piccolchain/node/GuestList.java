@@ -49,7 +49,7 @@ public class GuestList extends AbstractVerticle {
                             Set<String> peers = nodes.stream()
                                     .filter(it -> !node.equals(it))
                                     .collect(toSet());
-                            context.response().end(
+                            context.response().setStatusCode(201).end(
                                     Json.toJson(peers)
                             );
                         }));

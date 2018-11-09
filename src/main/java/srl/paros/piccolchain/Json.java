@@ -2,6 +2,8 @@ package srl.paros.piccolchain;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+
 public interface Json {
 
     Gson gson = new Gson();
@@ -10,7 +12,11 @@ public interface Json {
         return gson.toJson(object);
     }
 
-    static <T> T fromJson(String json, Class<T> clazz) {
-        return gson.fromJson(json, clazz);
+    static <T> T fromJson(String json, Class<T> type) {
+        return gson.fromJson(json, type);
+    }
+
+    static <T> T fromJson(String json, Type type) {
+        return gson.fromJson(json, type);
     }
 }

@@ -4,7 +4,7 @@ import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.GuestList;
-import srl.paros.piccolchain.node.Node;
+import srl.paros.piccolchain.node.NodeVerticle;
 
 public class Main {
 
@@ -21,7 +21,7 @@ public class Main {
                     Vertx.vertx().deployVerticle(new GuestList());
                     break;
                 case "node":
-                    new Node().init();
+                    Vertx.vertx().deployVerticle(new NodeVerticle());
                     break;
                 default:
                     log.error("node type {} not existent", args[0]);
