@@ -3,6 +3,8 @@ package srl.paros.piccolchain.node;
 import com.google.gson.reflect.TypeToken;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
 
 import java.lang.reflect.Type;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 public class NodeConnection extends AbstractVerticle {
 
     private static final Type SET_STRING = new TypeToken<Set<String>>() {}.getType();
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private boolean connected = false;
     private HttpClient httpClient;
     private String name;
@@ -42,6 +45,7 @@ public class NodeConnection extends AbstractVerticle {
                             peers = actualPeers.stream()
                                     .filter(node -> !node.equals(name))
                                     .collect(Collectors.toSet());
+                            log.info("Ottenuta la lista dei peers: {}", peers);
                         }))
                         .end();
             }

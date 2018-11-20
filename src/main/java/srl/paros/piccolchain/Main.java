@@ -1,33 +1,30 @@
 package srl.paros.piccolchain;
 
+import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.GuestList;
-import srl.paros.piccolchain.node.NodeVerticle;
+import srl.paros.piccolchain.node.Node;
 
 public class Main {
 
     private static Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-
         if (args.length < 1) {
             log.error("Node type parameter expected: 'guestlist' or 'node'");
+        } else {
+            Vertx.vertx().deployVerticle(node(args[0]));
         }
-        else {
-            switch (args[0]) {
-                case "guestlist":
-                    Vertx.vertx().deployVerticle(new GuestList());
-                    break;
-                case "node":
-                    Vertx.vertx().deployVerticle(new NodeVerticle());
-                    break;
-                default:
-                    log.error("node type {} not existent", args[0]);
-            }
-        }
+    }
 
+    private static Verticle node(String type) {
+        switch (type) {
+            case "guestlist": return new GuestList();
+            case "node": return new Node();
+            default: throw new RuntimeException("node type " + type + " not existent");
+        }
     }
 
 }
