@@ -4,14 +4,13 @@ import com.google.gson.reflect.TypeToken;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.net.NetSocket;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
-import srl.paros.piccolchain.domain.*;
+import srl.paros.piccolchain.node.domain.*;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static srl.paros.piccolchain.Hostname.HOSTNAME;
 import static srl.paros.piccolchain.Json.toJson;
-import static srl.paros.piccolchain.domain.Transactions.transactions;
+import static srl.paros.piccolchain.node.domain.Transactions.transactions;
 
 public class Node extends AbstractVerticle {
 

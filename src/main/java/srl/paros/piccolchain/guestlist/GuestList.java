@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node;
+package srl.paros.piccolchain.guestlist;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
@@ -6,6 +6,7 @@ import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
+import srl.paros.piccolchain.node.Nodes;
 
 import java.util.Map;
 import java.util.Set;

@@ -4,7 +4,7 @@ import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import srl.paros.piccolchain.node.GuestList;
+import srl.paros.piccolchain.guestlist.GuestList;
 import srl.paros.piccolchain.node.Node;
 
 public class Main {
