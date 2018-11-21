@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node;
+package srl.paros.piccolchain.node.domain;
 
 import srl.paros.piccolchain.Json;
 

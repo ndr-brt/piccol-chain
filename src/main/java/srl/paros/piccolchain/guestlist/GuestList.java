@@ -6,7 +6,7 @@ import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
-import srl.paros.piccolchain.node.Nodes;
+import srl.paros.piccolchain.node.domain.Nodes;
 
 import java.util.Map;
 import java.util.Set;

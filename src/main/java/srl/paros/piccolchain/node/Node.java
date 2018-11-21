@@ -6,11 +6,11 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.Json;
 import srl.paros.piccolchain.node.domain.*;
+import srl.paros.piccolchain.node.handler.*;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -43,73 +43,19 @@ public class Node extends AbstractVerticle {
         final var router = Router.router(vertx);
         final var eventBus = vertx.eventBus();
 
-        var engine = ThymeleafTemplateEngine.create();
-        router.get("/").handler(context -> {
-                    context.put("name", name);
-                    context.put("transactions", transactions.get());
-                    context.put("blocks", blockchain.blocks());
-                    engine.render(context, "templates/", "node.html", res -> {
-                        if (res.succeeded()) {
-                            context.response().end(res.result());
-                        } else {
-                            context.fail(res.cause());
-                        }
-                    });
-                });
+        router.get("/").handler(new Index(name, transactions, blockchain));
 
-        router.post("/transactions")
+        router.post("/transaction")
                 .consumes("application/json")
-                .handler(context -> context.request().bodyHandler(buffer -> {
-                    String body = buffer.toString();
-                    Transaction transaction = Json.fromJson(body, Transaction.class);
-                    transactions.append(transaction);
-                    log.info("New transaction: {}", transaction);
-                    eventBus.publish("transaction", toJson(transaction));
-                    context.response().end("Transaction created");
-                }));
+                .handler(new CreateTransactionJson(transactions));
 
         router.post("/transactions")
                 .consumes("application/x-www-form-urlencoded")
                 .handler(BodyHandler.create())
-                .handler(context -> {
-                    HttpServerRequest req = context.request();
-                    Transaction transaction = new Transaction(
-                            req.getParam("from"),
-                            req.getParam("to"),
-                            Long.valueOf(req.getParam("amount"))
-                    );
-                    transactions.append(transaction);
-                    eventBus.publish("transaction", toJson(transaction));
+                .handler(new CreateTransactionForm(transactions));
 
-                    context.response()
-                            .putHeader("Location", "/")
-                            .end("Transaction created");
-                });
-
-        router.get("/mine").handler(context -> {
-            Block lastBlock = blockchain.last();
-            int lastProofOfWork = lastBlock.data().proofOfWork();
-            Integer proof = ProofOfWork.proofOfWork.apply(lastProofOfWork);
-
-            transactions.append(new Transaction("network", name, 1));
-
-            Block newBlock = new Block(
-                    lastBlock.index() + 1,
-                    Instant.now().toEpochMilli(),
-                    new Data(proof, transactions.get()),
-                    lastBlock.hash()
-            );
-
-            blockchain.append(newBlock);
-            transactions.empty();
-            eventBus.publish("block", toJson(newBlock));
-
-            context.response()
-                    .putHeader("Location", "/")
-                    .end(toJson(blockchain.last()));
-        });
-
-        router.get("/blocks").handler(context -> context.response().end(toJson(blockchain.blocks())));
+        router.get("/mine").handler(new Mine(name, blockchain, transactions));
+        router.get("/blocks").handler(new GetBlocks(blockchain));
 
         router.exceptionHandler(error -> log.error("Error", error));
 
