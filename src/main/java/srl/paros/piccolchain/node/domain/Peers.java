@@ -33,5 +33,10 @@ public interface Peers {
         public void forEach(Consumer<String> action) {
             peers.forEach(action);
         }
+
+        @Override
+        public String toString() {
+            return peers.toString();
+        }
     }
 }
