@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node.consumer;
+package srl.paros.piccolchain.node;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -8,24 +8,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.domain.Peers;
 
-public class BroadcastTransactions implements Handler<Message<String>> {
-
+public class BroadcastBlock implements Handler<Message<String>> {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private Peers peers;
-    private NetClient netClient;
+    private final Peers peers;
+    private final NetClient netClient;
 
-    public BroadcastTransactions(Peers peers, NetClient netClient) {
+    public BroadcastBlock(Peers peers, NetClient netClient) {
         this.peers = peers;
         this.netClient = netClient;
     }
 
     @Override
     public void handle(Message<String> message) {
-        log.info("Broadcast transactions");
+        log.info("Broadcast block");
         peers.forEach(peer -> {
             netClient.connect(4568, peer, it -> {
                 if (it.succeeded()) {
-                    it.result().end(Buffer.buffer("transaction:" + message.body()));
+                    it.result().end(Buffer.buffer("block:" + message.body()));
                 }
             });
         });

@@ -61,6 +61,7 @@ public class Node extends AbstractVerticle {
                 .listen(4568);
 
         vertx.eventBus().consumer("transaction", new BroadcastTransactions(peers, vertx.createNetClient()));
+        vertx.eventBus().consumer("block", new BroadcastBlock(peers, vertx.createNetClient()));
 
         var httpClient = vertx.createHttpClient();
         vertx.setPeriodic(5000, new Initialize(name, connected, httpClient));
