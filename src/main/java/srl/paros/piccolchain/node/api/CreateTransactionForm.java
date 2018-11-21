@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node.handler;
+package srl.paros.piccolchain.node.api;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
