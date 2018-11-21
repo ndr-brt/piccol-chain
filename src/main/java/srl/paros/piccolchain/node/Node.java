@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.api.*;
 import srl.paros.piccolchain.node.consumer.BroadcastTransactions;
 import srl.paros.piccolchain.node.domain.Blockchain;
+import srl.paros.piccolchain.node.domain.Peers;
 import srl.paros.piccolchain.node.domain.Transactions;
 import srl.paros.piccolchain.node.p2p.PeerConnection;
 import srl.paros.piccolchain.node.task.Initialize;
 import srl.paros.piccolchain.node.task.UpdatePeerList;
 
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static srl.paros.piccolchain.Hostname.HOSTNAME;
@@ -27,7 +27,7 @@ public class Node extends AbstractVerticle {
     private final Blockchain blockchain = Blockchain.blockchain();
     private final String name;
     private AtomicBoolean connected = new AtomicBoolean(false);
-    private Set<String> peers;
+    private Peers peers = Peers.peers();
 
     public Node() {
         this.name = HOSTNAME.get();
