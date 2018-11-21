@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node.task;
+package srl.paros.piccolchain.node.p2p;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpClient;

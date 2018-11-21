@@ -1,4 +1,4 @@
-package srl.paros.piccolchain.node.task;
+package srl.paros.piccolchain.node.p2p;
 
 import com.google.gson.reflect.TypeToken;
 import io.vertx.core.Handler;

@@ -6,13 +6,14 @@ import io.vertx.ext.web.handler.BodyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import srl.paros.piccolchain.node.api.*;
-import srl.paros.piccolchain.node.consumer.BroadcastTransactions;
+import srl.paros.piccolchain.node.p2p.BroadcastBlock;
+import srl.paros.piccolchain.node.p2p.BroadcastTransactions;
 import srl.paros.piccolchain.node.domain.Blockchain;
 import srl.paros.piccolchain.node.domain.Peers;
 import srl.paros.piccolchain.node.domain.Transactions;
 import srl.paros.piccolchain.node.p2p.PeerConnection;
-import srl.paros.piccolchain.node.task.Initialize;
-import srl.paros.piccolchain.node.task.UpdatePeerList;
+import srl.paros.piccolchain.node.p2p.Initialize;
+import srl.paros.piccolchain.node.p2p.UpdatePeerList;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
